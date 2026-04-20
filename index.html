@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradePoint - Student Result Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <span>GradePoint</span>
+        </div>
+        <div class="nav-links">
+            <button class="btn btn-outline" onclick="openLoginModal('student')">Student Login</button>
+            <button class="btn btn-primary" onclick="openLoginModal('staff')">Faculty / Admin Login</button>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>India's leading<br>Result Management Platform</h1>
+            <p>Empowering educators and students with real-time academic insights, automated accurate grading, and seamless result publication.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary btn-large" onclick="openLoginModal('student')">Get Started</button>
+                <button class="btn btn-outline btn-large">Learn More</button>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>50k+</h3>
+                    <p>Students</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100+</h3>
+                    <p>Institutions</p>
+                </div>
+                <div class="stat-item">
+                    <h3>10M+</h3>
+                    <p>Results processed</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="hero_image.png" alt="Students looking at results" class="hero-img-element">
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            <div class="modal-header">
+                <h2 id="loginTitle">Login to GradePoint</h2>
+                <p>Welcome back! Please enter your details.</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Username / ID</label>
+                    <input type="text" id="username" placeholder="Enter your ID" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <input type="hidden" id="loginRole" value="">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

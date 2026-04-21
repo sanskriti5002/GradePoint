@@ -31,28 +31,53 @@ if (loginModal) {
 }
 
 // Handle Login Form
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     
     const role = loginRoleInput.value;
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password') ? document.getElementById('password').value.trim() : username;
     
     if (username.length < 3) {
         alert("Please enter a valid username/ID");
         return;
     }
     
-    const userRole = role === 'staff' ? (username.toLowerCase().includes('admin') ? 'Admin' : 'Teacher') : 'Student';
-    
-    const user = {
-        id: username,
-        role: userRole,
-        name: userRole === 'Student' ? 'Amit Kumar' : (userRole === 'Admin' ? 'System Admin' : 'Dr. Sharma'),
-        token: 'mock-jwt-token'
-    };
-    
-    localStorage.setItem('srms_user', JSON.stringify(user));
-    window.location.href = 'dashboard.html';
+    try {
+        const response = await fetch('/api/auth/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'username': username,
+                'password': password
+            })
+        });
+
+        if (!response.ok) {
+            alert('Login failed. Please check your credentials.');
+            return;
+        }
+
+        const data = await response.json();
+        const tokenPayload = JSON.parse(atob(data.access_token.split('.')[1]));
+        
+        const userRole = tokenPayload.role === 'admin' ? 'Admin' : (tokenPayload.role === 'teacher' ? 'Teacher' : 'Student');
+        
+        const user = {
+            id: tokenPayload.sub,
+            role: userRole,
+            name: username,
+            token: data.access_token
+        };
+        
+        localStorage.setItem('srms_user', JSON.stringify(user));
+        window.location.href = 'dashboard.html';
+    } catch (err) {
+        console.error(err);
+        alert('An error occurred during login');
+    }
 }
 
 // Check logged in state on load
@@ -146,4 +171,7 @@ function switchView(viewId, element) {
         activeView.classList.add('active');
     }
 }
+
+
+
 
